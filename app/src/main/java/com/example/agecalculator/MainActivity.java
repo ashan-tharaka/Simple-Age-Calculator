@@ -4,10 +4,12 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -121,6 +123,7 @@ DatePickerDialog datePickerDialog;
             @Override
             public void onClick(View v) {
 
+
                 String s1 = edit_date.getText().toString();
                 SimpleDateFormat sdf1 = new SimpleDateFormat("d/M/yyyy");
                 Date d1 = null;
@@ -154,6 +157,12 @@ DatePickerDialog datePickerDialog;
 
                 Period diff1 = Period.between(l1, l2);
                 text_age.setText("Your age is " + diff1.getYears() + " years "+diff1.getMonths()+" months and "+diff1.getDays()+" days.");
+                try {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
 
 
             }
