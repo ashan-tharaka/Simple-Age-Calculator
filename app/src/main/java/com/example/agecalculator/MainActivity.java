@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -24,6 +25,8 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+
+import es.dmoral.toasty.Toasty;
 
 public class MainActivity extends AppCompatActivity {
 Button btn_reset,btn_cal;
@@ -122,48 +125,56 @@ DatePickerDialog datePickerDialog;
         btn_cal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!"".contentEquals(edit_birth.getText().toString())&&!"".contentEquals(edit_date.getText().toString())){
 
 
-                String s1 = edit_date.getText().toString();
-                SimpleDateFormat sdf1 = new SimpleDateFormat("d/M/yyyy");
-                Date d1 = null;
-                try {
-                    d1= sdf1.parse(s1);
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                    String s1 = edit_date.getText().toString();
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("d/M/yyyy");
+                    Date d1 = null;
+                    try {
+                        d1= sdf1.parse(s1);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    Calendar c1= Calendar.getInstance();
+                    c1.setTime(d1);
+                    int year1 = c1.get(Calendar.YEAR);
+                    int month1 = c1.get(Calendar.MONTH) + 1;
+                    int date1 = c1.get(Calendar.DATE);
+                    LocalDate l2 = LocalDate.of(year1, month1, date1);
+
+
+                    String s = edit_birth.getText().toString();
+                    SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy");
+                    Date d = null;
+                    try {
+                        d = sdf.parse(s);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(d);
+                    int year = c.get(Calendar.YEAR);
+                    int month = c.get(Calendar.MONTH) + 1;
+                    int date = c.get(Calendar.DATE);
+                    LocalDate l1 = LocalDate.of(year, month, date);
+
+                    Period diff1 = Period.between(l1, l2);
+                    text_age.setText("Your age is " + diff1.getYears() + " years "+diff1.getMonths()+" months and "+diff1.getDays()+" days.");
+                    try {
+                        InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                    }
+
                 }
-                Calendar c1= Calendar.getInstance();
-                c1.setTime(d1);
-                int year1 = c1.get(Calendar.YEAR);
-                int month1 = c1.get(Calendar.MONTH) + 1;
-                int date1 = c1.get(Calendar.DATE);
-                LocalDate l2 = LocalDate.of(year1, month1, date1);
-
-
-                String s = edit_birth.getText().toString();
-                SimpleDateFormat sdf = new SimpleDateFormat("d/M/yyyy");
-                Date d = null;
-                try {
-                    d = sdf.parse(s);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                Calendar c = Calendar.getInstance();
-                c.setTime(d);
-                int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH) + 1;
-                int date = c.get(Calendar.DATE);
-                LocalDate l1 = LocalDate.of(year, month, date);
-
-                Period diff1 = Period.between(l1, l2);
-                text_age.setText("Your age is " + diff1.getYears() + " years "+diff1.getMonths()+" months and "+diff1.getDays()+" days.");
-                try {
-                    InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                } catch (Exception e) {
-                    // TODO: handle exception
-                }
-
+else {
+                    Toasty.warning(MainActivity.this,
+                            "Please fill required fields",
+                            Toast.LENGTH_SHORT)
+                            .show();
+}
 
             }
         });
