@@ -53,11 +53,7 @@ DatePickerDialog datePickerDialog;
         LocalDate date= LocalDate.now();
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("d/M/yyyy");
         String formattedDate = date.format(myFormatObj);
-
         edit_date.setText(formattedDate);
-
-
-
 
         edit_birth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,6 +162,7 @@ DatePickerDialog datePickerDialog;
                         imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                     } catch (Exception e) {
                         // TODO: handle exception
+
                     }
 
                 }
