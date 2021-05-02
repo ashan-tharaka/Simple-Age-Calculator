@@ -113,9 +113,6 @@ DatePickerDialog datePickerDialog;
                 edit_date.setText("");
                 text_age.setText("");
 
-
-
-
             }
         });
         btn_cal.setOnClickListener(new View.OnClickListener() {
